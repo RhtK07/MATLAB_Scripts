@@ -1,20 +1,30 @@
-clc;clear all;
+clc;clear all;close all
 
-%Aim: This code is being written to normalise the audio in the specified
-%range
+fprintf('Aim : To normalise the given audios\n');
 
-[x,fs]=audioread('mono_c1.wav');
-%subplot(2,1,1)
-%plot(x)
+%%Taking the audio locationa and destlocation_chime.scpination
+audio_file_loc = importdata('location_chime.scp');
 
-%Now in this section take the audio you want to normalise and specify the
-%range
+%audio_file_dest = importdata('/home/rohitk/Workspace/MSpace/Complex_mask_estimation/train_text/CTM_model3_mvdr_normalise/etf_real.scp');
 
-max_v=1; %this value shold be kept between 0 to 1
 
-x = audioNormalization_YW(x,max_v);
+loop_run = numel(audio_file_loc);
 
-%subplot(2,1,2)
-%plot(x)
+fprintf('The loop starts now\n');
 
-fprintf('End\n');
+for i=1:loop_run
+    location = audio_file_loc{i}
+
+    [signal,fs] = audioread(location);
+
+    max_v = 1 ;
+
+    m_signal = audioNormalization_YW(signal,max_v);
+
+    destination = audio_file_loc{i}
+
+    audiowrite(destination,m_signal,fs)
+
+end
+
+fprintf('Normalisation of audio is done\n');
